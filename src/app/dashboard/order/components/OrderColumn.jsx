@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { AiOutlineFilePdf } from "react-icons/ai";
+import { LOCAL_URL } from "../../../../../API_URL";
 
 export const OrderColumn = ({ title, backgroundColor }) => {
   const [orders, setOrders] = useState([]);
@@ -11,7 +12,7 @@ export const OrderColumn = ({ title, backgroundColor }) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://192.168.1.24:5000/api/orders");
+        const response = await axios.get( `${LOCAL_URL}api/orders`);
         setOrders(response.data.orders || []);
         setLoading(false);
       } catch (err) {

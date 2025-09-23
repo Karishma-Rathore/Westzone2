@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
+import { LOCAL_URL } from "../../../../../API_URL";
 
 export default function ProductFeedback() {
   const [productData, setProductData] = useState([]);
@@ -9,7 +10,7 @@ export default function ProductFeedback() {
   useEffect(() => {
     async function fetchFeedback() {
       try {
-        const res = await fetch("http://192.168.1.24:5000/api/feedback"); // API endpoint
+        const res = await fetch(`${LOCAL_URL}api/feedback`); // API endpoint
         const data = await res.json();
         if (data.success) {
           setProductData(data.data);

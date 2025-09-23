@@ -11,7 +11,7 @@ export default function SuggestedProducts() {
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const res = await axios.get('http://192.168.1.24:5000/api/feedback'); // backend API
+        const res = await axios.get(`${LOCAL_URL}api/feedback`); // backend API
         setFeedbackData(res.data.data || []);
       } catch (error) {
         console.error(error);
