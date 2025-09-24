@@ -10,32 +10,43 @@ export default function SuggestedProducts() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const res = await axios.get(`${LOCAL_URL}api/orders`);
-        const data = res.data;
+useEffect(() => {
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get(`${LOCAL_URL}api/orders`);
+      const data = res.data;
 
-        if (data.orders && Array.isArray(data.orders)) {
-          // Only keep orders with feedback
-          const ordersWithFeedback = data.orders.filter(
-            (order) => order.feedback && Object.keys(order.feedback).length > 0
+      if (data.orders && Array.isArray(data.orders)) {
+        // Filter orders that are delivered and have meaningful feedback
+        const ordersWithFeedback = data.orders.filter(order => {
+          if (order.status?.toLowerCase() !== "delivered") return false;
+          const fb = order.feedback;
+          return fb && (
+            fb.reason ||
+            fb.productSuggestion ||
+            fb.serviceRating ||
+            fb.qualityRating ||
+            fb.packagingRating ||
+            fb.deliveryRating ||
+            fb.totalRating
           );
-          setOrders(ordersWithFeedback);
-        } else {
-          console.error('No orders found in response', data);
-          toast.error('No orders found with feedback');
-        }
-      } catch (error) {
-        console.error(error);
-        toast.error('Error fetching orders with feedback');
-      } finally {
-        setLoading(false);
-      }
-    };
+        });
 
-    fetchOrders();
-  }, []);
+        setOrders(ordersWithFeedback);
+      } else {
+        console.error('No orders found in response', data);
+        toast.error('No orders found with feedback');
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Error fetching orders with feedback');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchOrders();
+}, []);
 
   // Filter orders by search
   const filteredOrders = orders.filter(order =>

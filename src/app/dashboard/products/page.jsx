@@ -1,9 +1,7 @@
-import React from 'react'
+'use client';
 
-const Products = () => {
-  return (
-    <div>Products</div>
-  )
+import ProductsDashboard from "./allProduct";
+
+export default function Page() {
+  return <ProductsDashboard/>;
 }
-
-export default Products

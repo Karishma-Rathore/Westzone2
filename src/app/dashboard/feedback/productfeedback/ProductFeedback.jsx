@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
-import { LOCAL_URL } from "../../../../../API_URL"; 
+import { LOCAL_URL } from "../../../../../API_URL";
 
 export default function OrderFeedback() {
   const [orders, setOrders] = useState([]);
@@ -8,32 +8,34 @@ export default function OrderFeedback() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-  async function fetchOrders() {
-    try {
-      const res = await fetch(`${LOCAL_URL}api/orders`);
-      const data = await res.json();
+    async function fetchOrders() {
+      try {
+        const res = await fetch(`${LOCAL_URL}api/orders`);
+        const data = await res.json();
 
-      if (data.orders && Array.isArray(data.orders)) {
-        // Filter orders that are delivered and have feedback
-        const deliveredWithFeedback = data.orders.filter(
-          order =>
-            order.status?.toLowerCase() === "delivered" &&
-            order.feedback &&
-            Object.keys(order.feedback).length > 0
-        );
-        setOrders(deliveredWithFeedback);
-      } else {
-        console.error("No orders found in response", data);
+        if (data.orders && Array.isArray(data.orders)) {
+          // Filter orders that are delivered and have feedback
+          const deliveredWithFeedback = data.orders.filter(order => {
+            if (order.status?.toLowerCase() !== "delivered") return false;
+            const fb = order.feedback;
+            if (!fb) return false;
+
+            return fb.reason || fb.productSuggestion || fb.serviceRating || fb.qualityRating || fb.packagingRating || fb.deliveryRating || fb.totalRating;
+          });
+
+          setOrders(deliveredWithFeedback);
+        } else {
+          console.error("No orders found in response", data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch orders:", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to fetch orders:", err);
-    } finally {
-      setLoading(false);
     }
-  }
 
-  fetchOrders();
-}, []);
+    fetchOrders();
+  }, []);
 
 
   const filteredData = orders.filter(item =>
@@ -80,8 +82,9 @@ export default function OrderFeedback() {
               <th className="px-4 py-3 text-gray-1000 text-base ">Submitted At</th>
             </tr>
           </thead>
+
           <tbody className="text-gray-700">
-            <br />
+
             {filteredData.map((order, idx) => (
               <tr key={idx} className="border-b hover:bg-blue-50 transition">
                 <td className="px-4 py-2 font-medium">{order.customer?.name}</td>

@@ -1,9 +1,7 @@
-import React from 'react'
+// 'use client';
 
-const Catergories = () => {
-  return (
-    <div>Catergories</div>
-  )
-}
+// import Dashboard from "./Dashboard";
 
-export default Catergories
+// export default function Page() {
+//   return <Dashboard/>;
+// }
