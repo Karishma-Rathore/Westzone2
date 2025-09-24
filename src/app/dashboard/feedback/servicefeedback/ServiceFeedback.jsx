@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { LOCAL_URL } from "../../../../../API_URL";
 export default function ServiceFeedback() {
   const [serviceData, setServiceData] = useState([]);
   const [search, setSearch] = useState("");

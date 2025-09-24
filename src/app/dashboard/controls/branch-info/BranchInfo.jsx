@@ -27,7 +27,7 @@ export default function BranchInfo() {
       .then(res => {
         if(res.data.status) setBranches(res.data.branches);
       })
-      .catch(err => console.error('Error fetching branches:', err.message));
+      .catch(err => console.log('Error fetching branches:', err.message));
   }, []);
 
   const resetForm = () => {
@@ -47,7 +47,7 @@ export default function BranchInfo() {
   };
 
 
-  
+
 const handleBranchChange = async (e) => {
   const branchId = e.target.value;
   setSelectedBranchId(branchId);
@@ -115,7 +115,7 @@ const handleBranchChange = async (e) => {
       await axios.put(`${BASE_URL}/branches/${selectedBranchId}`, updatedData);
       alert('Branch updated successfully!');
     } catch(err) {
-      console.error('Error updating branch:', err.message);
+      console.log('Error updating branch:', err.message);
       alert('Error updating branch. Check console.');
     }
   };
