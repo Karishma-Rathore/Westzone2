@@ -47,6 +47,7 @@ export default function BranchInfo() {
   };
 
 
+  
 const handleBranchChange = async (e) => {
   const branchId = e.target.value;
   setSelectedBranchId(branchId);
