@@ -51,9 +51,9 @@ export default function LowStockAlert() {
                   </h2>
                   <p className="text-black/70 text-sm">{item.branchId.address}</p>
                 </div>
-<div className="text-orange-500 border-2 border-orange-500 bg-white px-3 py-0  rounded-2xl font-normal text-lg">
-  {item.quantity} left
-</div>
+                <div className="text-orange-500 border-2 border-orange-500 bg-white px-3 py-0  rounded-2xl font-normal text-lg">
+                  {item.quantity} left
+                </div>
 
 
               </div>
