@@ -8,26 +8,33 @@ export default function OrderFeedback() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    async function fetchOrders() {
-      try {
-        const res = await fetch(`${LOCAL_URL}api/orders`);
-        const data = await res.json();
+  async function fetchOrders() {
+    try {
+      const res = await fetch(`${LOCAL_URL}api/orders`);
+      const data = await res.json();
 
-        if (data.orders && Array.isArray(data.orders)) {
-          const ordersWithFeedback = data.orders.filter(order => order.feedback && Object.keys(order.feedback).length > 0);
-          setOrders(ordersWithFeedback);
-        } else {
-          console.error("No orders found in response", data);
-        }
-      } catch (err) {
-        console.error("Failed to fetch orders:", err);
-      } finally {
-        setLoading(false);
+      if (data.orders && Array.isArray(data.orders)) {
+        // Filter orders that are delivered and have feedback
+        const deliveredWithFeedback = data.orders.filter(
+          order =>
+            order.status?.toLowerCase() === "delivered" &&
+            order.feedback &&
+            Object.keys(order.feedback).length > 0
+        );
+        setOrders(deliveredWithFeedback);
+      } else {
+        console.error("No orders found in response", data);
       }
+    } catch (err) {
+      console.error("Failed to fetch orders:", err);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    fetchOrders();
-  }, []);
+  fetchOrders();
+}, []);
+
 
   const filteredData = orders.filter(item =>
     (item.customer?.name || "")

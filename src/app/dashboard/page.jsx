@@ -1,7 +1,7 @@
-import React from "react";
+'use client';
 
-const Dashboard = () => {
-  return <div className="container mx-auto text-3xl text-center font-bold">Welcome to Dashboard</div>;
-};
+import Dashboard from "./Dashboard";
 
-export default Dashboard;
+export default function Page() {
+  return <Dashboard/>;
+}
