@@ -157,12 +157,12 @@ const Dashboard = () => {
         <h3 className="text-lg font-medium mb-2">Quick Actions</h3>
         <p className="text-sm text-gray-500 mb-4">Common tasks and shortcuts</p>
         <div className="grid gap-4 md:grid-cols-4">
-          <Link href="/add-product">
+          
             <button className="h-20 flex flex-col items-center justify-center bg-blue-500 text-white rounded-lg hover:opacity-90 transition">
               <Package className="mb-2 h-6 w-6" />
               Add Product
             </button>
-          </Link>
+       
           <button className="h-20 flex flex-col items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition">
             <ShoppingCart className="mb-2 h-6 w-6" />
             New Order

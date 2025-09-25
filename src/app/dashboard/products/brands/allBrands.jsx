@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -13,6 +13,7 @@ export default function BrandList() {
 
   const [newBrand, setNewBrand] = useState({
     brandName: "",
+    priority: 1, 
     isInList: true,
     image: null,
   });
@@ -54,6 +55,7 @@ export default function BrandList() {
       setLoading(true);
       const formData = new FormData();
       formData.append("brandName", newBrand.brandName);
+      formData.append("priority", newBrand.priority); 
       formData.append("isInList", newBrand.isInList ? "true" : "false");
       formData.append("image", newBrand.image);
 
@@ -72,7 +74,7 @@ export default function BrandList() {
       setBrands((prev) => [...prev, data.data || data]);
       toast.success("Brand added successfully");
 
-      setNewBrand({ brandName: "", isInList: true, image: null });
+      setNewBrand({ brandName: "", priority: 1, isInList: true, image: null });
       setPreview(null);
     } catch (err) {
       console.error(err);
@@ -81,6 +83,27 @@ export default function BrandList() {
       setLoading(false);
     }
   };
+
+  const updatePriority = async (id, newPriority) => {
+  try {
+    await fetch(`${LOCAL_URL}api/brand/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ priority: Number(newPriority) }),
+    });
+
+    setBrands((prev) =>
+      prev.map((b) =>
+        b._id === id ? { ...b, priority: Number(newPriority) } : b
+      )
+    );
+    toast.success("Priority updated");
+  } catch (err) {
+    console.error(err);
+    toast.error("Error updating priority");
+  }
+};
+
 
   // Delete brand
   const handleDelete = async () => {
@@ -114,7 +137,7 @@ export default function BrandList() {
     }
   };
 
-  // Filter brands by search term
+  // Filter brands
   const filteredBrands = brands.filter((brand) =>
     brand.brandName.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -138,7 +161,8 @@ export default function BrandList() {
       <div className="bg-white shadow-md rounded-lg p-6 mb-8">
         <h4 className="text-lg font-semibold mb-4">Add New Brand</h4>
         <form onSubmit={addBrand} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Brand Name */}
             <div>
               <label className="block text-sm font-medium mb-1">Brand Name</label>
               <input
@@ -150,19 +174,44 @@ export default function BrandList() {
                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="flex items-center">
-              <label className="flex items-center gap-2">
+
+            {/* Priority */}
+            <div>
+              <label className="block text-sm font-medium mb-1">Priority</label>
+              <input
+                type="number"
+                min="1"
+                value={newBrand.priority}
+                onChange={(e) =>
+                  setNewBrand({ ...newBrand, priority: Number(e.target.value) })
+                }
+                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Show in List (toggle) */}
+            <div className="flex flex-col justify-center">
+              <span className="text-sm font-medium mb-1">Show in List</span>
+              <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
                   checked={newBrand.isInList}
                   onChange={(e) =>
                     setNewBrand({ ...newBrand, isInList: e.target.checked })
                   }
-                  className="w-5 h-5 text-blue-600 border-gray-300 rounded"
+                  className="sr-only peer"
                 />
-                <span className="text-sm font-medium">Show in List</span>
+                <div className="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-500 relative transition-colors duration-300">
+                  <div
+                    className={`absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
+                      newBrand.isInList ? "translate-x-6" : "translate-x-0"
+                    }`}
+                  ></div>
+                </div>
               </label>
             </div>
+
+            {/* Image Upload */}
             <div>
               <label className="block text-sm font-medium mb-1">Upload Image</label>
               <input
@@ -204,6 +253,7 @@ export default function BrandList() {
             <thead className="bg-gray-800 text-white">
               <tr>
                 <th className="px-4 py-2">Brand</th>
+<th className="px-6 py-1 w-32">Priority</th>
                 <th className="px-4 py-2 text-center">In List</th>
                 <th className="px-4 py-2 text-center">Action</th>
               </tr>
@@ -211,6 +261,7 @@ export default function BrandList() {
             <tbody>
               {filteredBrands.map((brand) => (
                 <tr key={brand._id} className="border-b hover:bg-gray-50">
+                  {/* Brand column */}
                   <td className="px-4 py-2 flex items-center gap-3">
                     {brand.image && (
                       <img
@@ -221,14 +272,39 @@ export default function BrandList() {
                     )}
                     <span className="font-medium">{brand.brandName}</span>
                   </td>
+
+                  {/* Priority column */}
+<td className="px-4 py-2">
+  <input
+    type="number"
+    value={brand.priority || 1}
+    onChange={(e) => updatePriority(brand._id, e.target.value)}
+    className="w-28 px-3 py-1 border border-gray-300 rounded text-sm bg-gray-50 focus:ring-2 focus:ring-blue-500"
+    min={1}
+  />
+</td>
+
+
+                  {/* iOS toggle */}
                   <td className="px-4 py-2 text-center">
-                    <input
-                      type="checkbox"
-                      checked={brand.isInList}
-                      onChange={() => toggleInList(brand._id, brand.isInList)}
-                      className="w-5 h-5 text-blue-600 border-gray-300 rounded"
-                    />
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={brand.isInList}
+                        onChange={() => toggleInList(brand._id, brand.isInList)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-500 relative transition-colors duration-300">
+                        <div
+                          className={`absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
+                            brand.isInList ? "translate-x-6" : "translate-x-0"
+                          }`}
+                        ></div>
+                      </div>
+                    </label>
                   </td>
+
+                  {/* Action buttons */}
                   <td className="px-4 py-2 text-center">
                     <div className="flex justify-center gap-2">
                       <Link
@@ -250,7 +326,7 @@ export default function BrandList() {
 
               {filteredBrands.length === 0 && (
                 <tr>
-                  <td colSpan={3} className="px-4 py-6 text-center text-gray-500">
+                  <td colSpan={4} className="px-4 py-6 text-center text-gray-500">
                     No brands found.
                   </td>
                 </tr>
