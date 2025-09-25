@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 "use client";
+=======
+'use client';
+>>>>>>> origin/main
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
+<<<<<<< HEAD
 import { LOCAL_URL } from "../../../../../API_URL";
+=======
+// import { LOCAL_URL } from "../../../../../API_URL";
+>>>>>>> origin/main
 
 export default function BrandList() {
   const [brands, setBrands] = useState([]);
@@ -13,7 +21,10 @@ export default function BrandList() {
 
   const [newBrand, setNewBrand] = useState({
     brandName: "",
+<<<<<<< HEAD
     priority: 1, 
+=======
+>>>>>>> origin/main
     isInList: true,
     image: null,
   });
@@ -22,7 +33,11 @@ export default function BrandList() {
   // Fetch all brands
   const fetchBrands = async () => {
     try {
+<<<<<<< HEAD
       const res = await fetch(`${LOCAL_URL}api/brand`);
+=======
+      const res = await fetch(` http://192.168.1.24:5000/api/brand`);
+>>>>>>> origin/main
       const data = await res.json();
       setBrands(data.data || data || []);
     } catch (err) {
@@ -55,11 +70,18 @@ export default function BrandList() {
       setLoading(true);
       const formData = new FormData();
       formData.append("brandName", newBrand.brandName);
+<<<<<<< HEAD
       formData.append("priority", newBrand.priority); 
       formData.append("isInList", newBrand.isInList ? "true" : "false");
       formData.append("image", newBrand.image);
 
       const res = await fetch(`${LOCAL_URL}api/brand`, {
+=======
+      formData.append("isInList", newBrand.isInList ? "true" : "false");
+      formData.append("image", newBrand.image);
+
+      const res = await fetch(`http://192.168.1.24:5000/api/brand`, {
+>>>>>>> origin/main
         method: "POST",
         body: formData,
       });
@@ -74,7 +96,11 @@ export default function BrandList() {
       setBrands((prev) => [...prev, data.data || data]);
       toast.success("Brand added successfully");
 
+<<<<<<< HEAD
       setNewBrand({ brandName: "", priority: 1, isInList: true, image: null });
+=======
+      setNewBrand({ brandName: "", isInList: true, image: null });
+>>>>>>> origin/main
       setPreview(null);
     } catch (err) {
       console.error(err);
@@ -84,6 +110,7 @@ export default function BrandList() {
     }
   };
 
+<<<<<<< HEAD
   const updatePriority = async (id, newPriority) => {
   try {
     await fetch(`${LOCAL_URL}api/brand/${id}`, {
@@ -109,6 +136,12 @@ export default function BrandList() {
   const handleDelete = async () => {
     try {
       await fetch(`${LOCAL_URL}api/brand/${deleteId}`, { method: "DELETE" });
+=======
+  // Delete brand
+  const handleDelete = async () => {
+    try {
+      await fetch(` http://192.168.1.24:5000/api/brand/${deleteId}`, { method: "DELETE" });
+>>>>>>> origin/main
       setBrands((prev) => prev.filter((b) => b._id !== deleteId));
       toast.success("Brand deleted successfully");
       setDeleteId(null);
@@ -121,7 +154,11 @@ export default function BrandList() {
   // Toggle brand visibility
   const toggleInList = async (id, currentValue) => {
     try {
+<<<<<<< HEAD
       await fetch(`${LOCAL_URL}api/brand/${id}`, {
+=======
+      await fetch(` http://192.168.1.24:5000/api/brand/${id}`, {
+>>>>>>> origin/main
         method: "PUT",
         body: JSON.stringify({ isInList: !currentValue }),
         headers: { "Content-Type": "application/json" },
@@ -137,7 +174,11 @@ export default function BrandList() {
     }
   };
 
+<<<<<<< HEAD
   // Filter brands
+=======
+  // Filter brands by search term
+>>>>>>> origin/main
   const filteredBrands = brands.filter((brand) =>
     brand.brandName.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -161,8 +202,12 @@ export default function BrandList() {
       <div className="bg-white shadow-md rounded-lg p-6 mb-8">
         <h4 className="text-lg font-semibold mb-4">Add New Brand</h4>
         <form onSubmit={addBrand} className="space-y-4">
+<<<<<<< HEAD
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Brand Name */}
+=======
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+>>>>>>> origin/main
             <div>
               <label className="block text-sm font-medium mb-1">Brand Name</label>
               <input
@@ -174,6 +219,7 @@ export default function BrandList() {
                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
+<<<<<<< HEAD
 
             {/* Priority */}
             <div>
@@ -193,12 +239,17 @@ export default function BrandList() {
             <div className="flex flex-col justify-center">
               <span className="text-sm font-medium mb-1">Show in List</span>
               <label className="relative inline-flex items-center cursor-pointer">
+=======
+            <div className="flex items-center">
+              <label className="flex items-center gap-2">
+>>>>>>> origin/main
                 <input
                   type="checkbox"
                   checked={newBrand.isInList}
                   onChange={(e) =>
                     setNewBrand({ ...newBrand, isInList: e.target.checked })
                   }
+<<<<<<< HEAD
                   className="sr-only peer"
                 />
                 <div className="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-500 relative transition-colors duration-300">
@@ -212,6 +263,13 @@ export default function BrandList() {
             </div>
 
             {/* Image Upload */}
+=======
+                  className="w-5 h-5 text-blue-600 border-gray-300 rounded"
+                />
+                <span className="text-sm font-medium">Show in List</span>
+              </label>
+            </div>
+>>>>>>> origin/main
             <div>
               <label className="block text-sm font-medium mb-1">Upload Image</label>
               <input
@@ -253,7 +311,10 @@ export default function BrandList() {
             <thead className="bg-gray-800 text-white">
               <tr>
                 <th className="px-4 py-2">Brand</th>
+<<<<<<< HEAD
 <th className="px-6 py-1 w-32">Priority</th>
+=======
+>>>>>>> origin/main
                 <th className="px-4 py-2 text-center">In List</th>
                 <th className="px-4 py-2 text-center">Action</th>
               </tr>
@@ -261,8 +322,12 @@ export default function BrandList() {
             <tbody>
               {filteredBrands.map((brand) => (
                 <tr key={brand._id} className="border-b hover:bg-gray-50">
+<<<<<<< HEAD
                   {/* Brand column */}
                   <td className="px-4 py-2 flex items-center gap-3">
+=======
+                  {/* <td className="px-4 py-2 flex items-center gap-3">
+>>>>>>> origin/main
                     {brand.image && (
                       <img
                         src={LOCAL_URL + brand.image}
@@ -271,6 +336,7 @@ export default function BrandList() {
                       />
                     )}
                     <span className="font-medium">{brand.brandName}</span>
+<<<<<<< HEAD
                   </td>
 
                   {/* Priority column */}
@@ -305,6 +371,17 @@ export default function BrandList() {
                   </td>
 
                   {/* Action buttons */}
+=======
+                  </td> */}
+                  <td className="px-4 py-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={brand.isInList}
+                      onChange={() => toggleInList(brand._id, brand.isInList)}
+                      className="w-5 h-5 text-blue-600 border-gray-300 rounded"
+                    />
+                  </td>
+>>>>>>> origin/main
                   <td className="px-4 py-2 text-center">
                     <div className="flex justify-center gap-2">
                       <Link
@@ -326,7 +403,11 @@ export default function BrandList() {
 
               {filteredBrands.length === 0 && (
                 <tr>
+<<<<<<< HEAD
                   <td colSpan={4} className="px-4 py-6 text-center text-gray-500">
+=======
+                  <td colSpan={3} className="px-4 py-6 text-center text-gray-500">
+>>>>>>> origin/main
                     No brands found.
                   </td>
                 </tr>
@@ -371,4 +452,8 @@ export default function BrandList() {
       )}
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

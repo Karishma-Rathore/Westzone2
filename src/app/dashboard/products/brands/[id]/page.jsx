@@ -7,4 +7,8 @@ export default function Page({ params }) {
   const { id } = React.use(params);
 
   return <EditBrand id={id} />;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

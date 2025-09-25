@@ -4,7 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+<<<<<<< HEAD
 import { LOCAL_URL } from "../../../../../../API_URL";
+=======
+// import { LOCAL_URL } from "../../../../../../API_URL";
+>>>>>>> origin/main
 
 export default function EditBrand({ id }) {
   const router = useRouter();
@@ -12,21 +16,35 @@ export default function EditBrand({ id }) {
   const [brand, setBrand] = useState({
     brandName: "",
     isInList: false,
+<<<<<<< HEAD
     image: [],       // existing image URLs
     imageFiles: [],  // new files selected
   });
 
   const [preview, setPreview] = useState(null);
+=======
+    image: [],      // existing image URLs
+    imageFiles: [],  // new files selected
+  });
+
+>>>>>>> origin/main
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
+<<<<<<< HEAD
   // Fetch brand data
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${LOCAL_URL}api/brand/${id}/products`);
+=======
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`http://192.168.1.24:5000/api/brand/${id}/products`);
+>>>>>>> origin/main
         const data = res.data.data;
 
         setBrand({
@@ -38,10 +56,13 @@ export default function EditBrand({ id }) {
 
         setProducts(data.products || []);
         setFilteredProducts(data.products || []);
+<<<<<<< HEAD
 
         if (data.brand.image) {
           setPreview(`${LOCAL_URL}${data.brand.image}`);
         }
+=======
+>>>>>>> origin/main
       } catch (err) {
         console.error(err);
         toast.error("Failed to fetch brand data");
@@ -53,6 +74,7 @@ export default function EditBrand({ id }) {
     fetchData();
   }, [id]);
 
+<<<<<<< HEAD
   // Handle file input
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -62,17 +84,39 @@ export default function EditBrand({ id }) {
   };
 
   // Save brand
+=======
+  // Handle multiple image upload
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setBrand((prev) => ({
+      ...prev,
+      imageFiles: [...prev.imageFiles, ...files],
+      image: [...prev.image, ...previews],
+    }));
+  };
+
+  // Save brand updates
+>>>>>>> origin/main
   const handleSave = async () => {
     try {
       const formData = new FormData();
       formData.append("brandName", brand.brandName);
       formData.append("isInList", brand.isInList);
 
+<<<<<<< HEAD
       if (brand.imageFiles.length > 0) {
         brand.imageFiles.forEach((file) => formData.append("image", file));
       }
 
       await axios.put(`${LOCAL_URL}api/brand/${id}`, formData, {
+=======
+      brand.imageFiles.forEach((file) => formData.append("image", file));
+
+      await axios.put(`http://192.168.1.24:5000/api/brand/${id}`, formData, {
+>>>>>>> origin/main
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -100,6 +144,7 @@ export default function EditBrand({ id }) {
     return <p className="text-center mt-4 text-gray-500">Loading...</p>;
 
   return (
+<<<<<<< HEAD
     <div className="w-full pt-10 bg-gray-100 min-h-screen p-4 flex justify-center">
       {/* Main Card */}
       <div className="bg-white shadow-xl rounded-xl w-full max-w-6xl p-6 space-y-6">
@@ -205,10 +250,24 @@ export default function EditBrand({ id }) {
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+=======
+    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow space-y-6">
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex-1 space-y-4">
+          <div>
+            <label className="block font-medium mb-2">Brand Name</label>
+            <input
+              type="text"
+              value={brand.brandName}
+              onChange={(e) =>
+                setBrand((prev) => ({ ...prev, brandName: e.target.value }))
+              }
+>>>>>>> origin/main
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
+<<<<<<< HEAD
           {/* Products Table */}
           {filteredProducts.length > 0 ? (
             <table className="w-full border border-gray-200 rounded">
@@ -237,3 +296,105 @@ export default function EditBrand({ id }) {
     </div>
   );
 }
+=======
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="isInList"
+              checked={brand.isInList}
+              onChange={(e) =>
+                setBrand((prev) => ({ ...prev, isInList: e.target.checked }))
+              }
+              className="w-4 h-4"
+            />
+            <label htmlFor="isInList">Is in List</label>
+          </div>
+
+          <div>
+            <label className="block font-medium mb-2">Upload image</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFileChange}
+              className="border border-gray-300 rounded px-3 py-1"
+            />
+          </div>
+
+          <div className="flex gap-3 mt-4">
+            <button
+              onClick={handleSave}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
+              Save
+            </button>
+            <button
+              onClick={() => router.push("/dashboard/products/brands")}
+              className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        {/* Right: Big Image Preview */}
+        <div className="flex-1 flex flex-col items-center justify-start">
+          {/* {brand.image.length > 0 ? (
+            <img
+              src={
+                brand.image[brand.image.length - 1].startsWith("blob")
+                  ? brand.image[brand.image.length - 1]
+                  : LOCAL_URL + brand.image[brand.image.length - 1]
+              }
+              alt="Brand Preview"
+              className="w-full max-w-md h-80 object-cover rounded border shadow"
+            />
+          ) : (
+            <div className="w-full max-w-md h-80 flex items-center justify-center border rounded text-gray-400">
+              No Image
+            </div>
+          )} */}
+        </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="mb-3">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* Products Table */}
+      <div>
+        <h4 className="text-lg font-medium mb-3">Products under this Brand</h4>
+        {filteredProducts.length > 0 ? (
+          <table className="w-full border border-gray-200 rounded">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="border px-3 py-2">Name</th>
+                <th className="border px-3 py-2">Price</th>
+                <th className="border px-3 py-2">Barcode</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProducts.map((p) => (
+                <tr key={p._id}>
+                  <td className="border px-3 py-2">{p.productName}</td>
+                  <td className="border px-3 py-2">₹{p.basePrice}</td>
+                  <td className="border px-3 py-2">{p.barcode}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="text-gray-500">No products found for this brand.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+>>>>>>> origin/main
