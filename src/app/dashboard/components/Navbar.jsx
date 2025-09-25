@@ -31,7 +31,7 @@ const Navbar = () => {
             <li>
               <Link
                 href="/dashboard/order"
-                onClick={handleLinkClick} // ✅ close on click
+                onClick={handleLinkClick} // close on click
                 className={`text-lg font-semibold ${
                   pathname === "/dashboard/order"
                     ? "text-blue-500"
@@ -58,7 +58,7 @@ const Navbar = () => {
                 <ul className="absolute bg-white shadow-md rounded-md mt-7 w-52">
                   <li>
                     <Link
-                      href="/dashboard/products"
+                      href="/dashboard/products/add-product"
                       onClick={handleLinkClick}
                       className="block px-4 py-2 hover:bg-gray-100 text-gray-800"
                     >
@@ -103,7 +103,7 @@ const Navbar = () => {
                 <ul className="absolute bg-white shadow-md rounded-md mt-7 w-52">
                   <li>
                     <Link
-                      href="/dashboard/promotions"
+                      href="/dashboard/promotion/promotionss"
                       onClick={handleLinkClick}
                       className="block px-4 py-2 hover:bg-gray-100 text-gray-800"
                     >

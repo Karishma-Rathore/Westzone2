@@ -1,9 +1,6 @@
-import React from 'react'
+'use client';
 
-const Brands = () => {
-  return (
-    <div>Brands</div>
-  )
+import BrandList from "./allBrands";
+export default function Page() {
+  return <BrandList/>;
 }
-
-export default Brands
