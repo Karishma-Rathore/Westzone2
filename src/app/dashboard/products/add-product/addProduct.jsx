@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-// import { LOCAL_URL } from "../../../../../API_URL";
+import { LOCAL_URL } from "../../../../../API_URL";
 
 export default function AddProduct() {
   const [form, setForm] = useState({
@@ -29,13 +29,13 @@ export default function AddProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const catRes = await axios.get(` http://192.168.1.24:5000/api/category`);
+        const catRes = await axios.get(`${LOCAL_URL}api/category`);
         setCategories(catRes.data.data);
 
-        const brandRes = await axios.get(` http://192.168.1.24:5000/api/brand/`);
+        const brandRes = await axios.get(` ${LOCAL_URL}api/brand/`);
         setBrands(brandRes.data.data);
 
-        const branchRes = await axios.get(` http://192.168.1.24:5000/api/branches`);
+        const branchRes = await axios.get(` ${LOCAL_URL}api/branches`);
         setBranches(branchRes.data.branches);
       } catch (err) {
         console.error("Error fetching data", err);
@@ -70,7 +70,7 @@ export default function AddProduct() {
         }
       });
 
-      await axios.post(` http://192.168.1.24:5000/api/products`, formData, {
+      await axios.post(` ${LOCAL_URL}api/products`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

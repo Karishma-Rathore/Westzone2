@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { ArrowsUpDownIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { LOCAL_URL } from "../../../../../API_URL";
 
 export default function OutOfStock() {
   const [lowStockData, setLowStockData] = useState([]);
@@ -18,7 +19,7 @@ export default function OutOfStock() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://192.168.1.24:5000/api/reports/low-stock?threshold=${threshold}`
+          `${LOCAL_URL}api/reports/low-stock?threshold=${threshold}`
         );
         setLowStockData(res.data.lowStock || []);
       } catch (error) {

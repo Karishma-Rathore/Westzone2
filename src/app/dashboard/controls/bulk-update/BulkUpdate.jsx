@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/react/24/solid';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { LOCAL_URL } from '../../../../../API_URL';
 
 export default function BulkUpdate() {
   const [branches, setBranches] = useState([]);
@@ -15,7 +16,7 @@ export default function BulkUpdate() {
     const fetchBranches = async () => {
       try {
         const token = localStorage.getItem('token'); // your auth token
-        const res = await axios.get('http://localhost:5000/api/branches');
+        const res = await axios.get(`${LOCAL_URL}api/branches`);
         setBranches(Array.isArray(res.data.branches ? res.data.branches : res.data) ? res.data.branches || res.data : []);
       } catch (err) {
         console.error(err);
@@ -58,7 +59,7 @@ export default function BulkUpdate() {
     setLoading(true);
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/inventory/mine/bulk',
+        `${LOCAL_URL}api/inventory/mine/bulk`,
         formData,
         {
           headers: {

@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { LOCAL_URL } from "../../../../../API_URL";
 
 export default function ServiceFeedback() {
   const [serviceData, setServiceData] = useState([]);
@@ -9,7 +10,7 @@ export default function ServiceFeedback() {
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const res = await axios.get("http://192.168.1.24:5000/api/feedback");
+        const res = await axios.get(`${LOCAL_URL}api/feedback`);
         setServiceData(res.data.data || []);
       } catch (err) {
         console.error("Error fetching feedback:", err);

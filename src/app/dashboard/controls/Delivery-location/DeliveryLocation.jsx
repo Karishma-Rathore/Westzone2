@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import StoreMap from "./StoreMap"; // <-- StoreMap import
+import { LOCAL_URL } from "../../../../../API_URL";
 
 export default function DeliveryLocation() {
   const [stores, setStores] = useState([]);
@@ -23,7 +24,7 @@ export default function DeliveryLocation() {
   useEffect(() => {
     const fetchStores = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/branches/location", {
+        const res = await axios.get(`${LOCAL_URL}api/branches/location`, {
           params: { lng: 72.8777, lat: 19.0760 }
         });
         const data = res.data;
@@ -103,7 +104,7 @@ export default function DeliveryLocation() {
     try {
       const store = stores.find(s => s.id === selectedStoreId);
       await axios.post(
-        `http://localhost:5000/api/branches/${store.branchId}/stores/${selectedStoreId}/zones`,
+        `h${LOCAL_URL}api/branches/${store.branchId}/stores/${selectedStoreId}/zones`,
         {
           ...form,
           polygon: { type: "Polygon", coordinates: [form.coordinates] }

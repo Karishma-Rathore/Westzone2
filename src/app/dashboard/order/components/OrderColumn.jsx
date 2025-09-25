@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { AiOutlineFilePdf } from "react-icons/ai";
 import toast from "react-hot-toast";
+import { LOCAL_URL } from "../../../../../API_URL";
 
 export const OrderColumn = ({ title, backgroundColor }) => {
   const [orders, setOrders] = useState([]);
@@ -14,7 +15,7 @@ export const OrderColumn = ({ title, backgroundColor }) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/orders"); // backend API
+        const res = await axios.get(`${LOCAL_URL}api/orders`); // backend API
         setOrders(res.data.orders || []);
         setLoading(false);
       } catch (err) {

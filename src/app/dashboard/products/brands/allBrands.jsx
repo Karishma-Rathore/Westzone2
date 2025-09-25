@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
-// import { LOCAL_URL } from "../../../../../API_URL";
+import { LOCAL_URL } from "../../../../../API_URL";
 
 export default function BrandList() {
   const [brands, setBrands] = useState([]);
@@ -21,7 +21,7 @@ export default function BrandList() {
   // Fetch all brands
   const fetchBrands = async () => {
     try {
-      const res = await fetch(` http://192.168.1.24:5000/api/brand`);
+      const res = await fetch(`${LOCAL_URL}api/brand`);
       const data = await res.json();
       setBrands(data.data || data || []);
     } catch (err) {
@@ -57,7 +57,7 @@ export default function BrandList() {
       formData.append("isInList", newBrand.isInList ? "true" : "false");
       formData.append("image", newBrand.image);
 
-      const res = await fetch(`http://192.168.1.24:5000/api/brand`, {
+      const res = await fetch(`${LOCAL_URL}api/brand`, {
         method: "POST",
         body: formData,
       });
@@ -85,7 +85,7 @@ export default function BrandList() {
   // Delete brand
   const handleDelete = async () => {
     try {
-      await fetch(` http://192.168.1.24:5000/api/brand/${deleteId}`, { method: "DELETE" });
+      await fetch(` h${LOCAL_URL}api/brand/${deleteId}`, { method: "DELETE" });
       setBrands((prev) => prev.filter((b) => b._id !== deleteId));
       toast.success("Brand deleted successfully");
       setDeleteId(null);
@@ -98,7 +98,7 @@ export default function BrandList() {
   // Toggle brand visibility
   const toggleInList = async (id, currentValue) => {
     try {
-      await fetch(` http://192.168.1.24:5000/api/brand/${id}`, {
+      await fetch(`${LOCAL_URL}api/brand/${id}`, {
         method: "PUT",
         body: JSON.stringify({ isInList: !currentValue }),
         headers: { "Content-Type": "application/json" },

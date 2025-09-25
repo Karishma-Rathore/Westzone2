@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-// import { LOCAL_URL } from "../../../../../../API_URL";
+import { LOCAL_URL } from "../../../../../../API_URL";
 
 export default function EditBrand({ id }) {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function EditBrand({ id }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://192.168.1.24:5000/api/brand/${id}/products`);
+        const res = await axios.get(`${LOCAL_URL}api/brand/${id}/products`);
         const data = res.data.data;
 
         setBrand({
@@ -69,7 +69,7 @@ export default function EditBrand({ id }) {
 
       brand.imageFiles.forEach((file) => formData.append("image", file));
 
-      await axios.put(`http://192.168.1.24:5000/api/brand/${id}`, formData, {
+      await axios.put(`h${LOCAL_URL}api/brand/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { PencilIcon, TrashIcon, ArrowsUpDownIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { LOCAL_URL } from '../../../../../API_URL';
 
 export default function DeliveryBoy() {
   const [staffList, setStaffList] = useState([]);
@@ -18,7 +19,7 @@ export default function DeliveryBoy() {
 
   const fetchStaff = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/delivery-staff");
+      const res = await axios.get(`${LOCAL_URL}api/delivery-staff`);
       setStaffList(res.data.data || []);
     } catch (error) {
       console.error("Error fetching staff:", error);
@@ -29,7 +30,7 @@ export default function DeliveryBoy() {
   // ✅ Delete Staff
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/delivery-staff/${id}`);
+      await axios.delete(`${LOCAL_URL}api/delivery-staff/${id}`);
       setStaffList(staffList.filter(item => item._id !== id));
       toast.success("Staff deleted!");
     } catch (error) {
@@ -47,10 +48,10 @@ export default function DeliveryBoy() {
   const handleSave = async (formData) => {
     try {
       if (editData) {
-        await axios.put(`http://localhost:5000/api/delivery-staff/${editData._id}`, formData);
+        await axios.put(`h${LOCAL_URL}api/delivery-staff/${editData._id}`, formData);
         toast.success("Staff updated!");
       } else {
-        await axios.post(`http://localhost:5000/api/delivery-staff`, formData);
+        await axios.post(`${LOCAL_URL}api/delivery-staff`, formData);
         toast.success("Staff added!");
       }
       setShowForm(false);

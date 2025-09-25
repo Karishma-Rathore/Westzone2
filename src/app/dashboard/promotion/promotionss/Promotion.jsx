@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { LOCAL_URL } from "../../../../../API_URL";
 
 // ✅ Fullscreen modal form
 function PromotionForm({ isOpen, onClose, onCreated, addPromotion }) {
@@ -42,7 +43,7 @@ function PromotionForm({ isOpen, onClose, onCreated, addPromotion }) {
     }
 
     try {
-      const res = await axios.post("http://192.168.1.24:5000/api/promotions", {
+      const res = await axios.post(`${LOCAL_URL}api/promotions`, {
         title,
         description,
         promotionType,
@@ -183,7 +184,7 @@ export default function Promotion() {
 
   const fetchPromotions = async () => {
     try {
-      const res = await axios.get("http://192.168.1.24:5000/api/promotions");
+      const res = await axios.get(`${LOCAL_URL}api/promotions`);
       setPromotions(res.data.promotions || res.data || []);
     } catch (err) {
       console.error(err);
@@ -197,7 +198,7 @@ export default function Promotion() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://192.168.1.24:5000/api/promotions/${id}`);
+      await axios.delete(`${LOCAL_URL}api/promotions/${id}`);
       toast.success("Promotion deleted");
       setPromotions(prev => prev.filter(p => p._id !== id));
     } catch (err) {

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { LOCAL_URL } from "../../../../../API_URL";
+
 
 export default function PanelUserPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,7 +22,7 @@ export default function PanelUserPage() {
         setLoading(true);
         setError(null);
 
-        const res = await axios.get("http://192.168.1.24:5000/api/users/getdata"); 
+        const res = await axios.get(`${LOCAL_URL}api/users/getdata`); 
         // ✅ Populate branch data is already done in backend
         setUsers(res.data?.data || []);
       } catch (err) {

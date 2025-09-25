@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FiEdit } from "react-icons/fi";
+import { LOCAL_URL } from "../../../../API_URL";
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -19,7 +20,7 @@ export default function UsersPage() {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const res = await axios.get("http://192.168.1.24:5000/api/users/getdata");
+        const res = await axios.get(`${LOCAL_URL}api/users/getdata`);
         setUsers(res.data?.data || []);
       } catch (err) {
         console.error("Error fetching users:", err);
