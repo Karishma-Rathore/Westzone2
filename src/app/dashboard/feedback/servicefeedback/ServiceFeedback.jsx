@@ -3,25 +3,51 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { LOCAL_URL } from "../../../../../API_URL";
 export default function ServiceFeedback() {
-  const [serviceData, setServiceData] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const fetchFeedback = async () => {
+     async function fetchOrders() {
       try {
-        const res = await axios.get(`${LOCAL_URL}api/feedback`);
-        setServiceData(res.data.data || []);
-      } catch (err) {
-        console.error("Error fetching feedback:", err);
-      }
-    };
-    fetchFeedback();
-  }, []);
+        const res = await fetch(`${LOCAL_URL}api/orders`);
+        const data = await res.json();
 
+        if (data.orders && Array.isArray(data.orders)) {
+          // Filter orders that are delivered and have feedback
+          const deliveredWithFeedback = data.orders.filter(order => {
+            if (order.status?.toLowerCase() !== "delivered") return false;
+            const fb = order.feedback;
+            if (!fb) return false;
+
+            return fb.reason || fb.productSuggestion || fb.serviceRating || fb.qualityRating || fb.packagingRating || fb.deliveryRating || fb.totalRating;
+          });
+
+          setOrders(deliveredWithFeedback);
+        } else {
+          console.error("No orders found in response", data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch orders:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchOrders();
+    },[])
   // Filtered data for search
-  const filteredData = serviceData.filter(f =>
-    f.name.toLowerCase().includes(search.toLowerCase()) ||
-    f.orderId.toString().includes(search)
+  const filteredData = orders.filter(order =>
+    (order.customer?.name || "")
+      .toLowerCase()
+      .includes(search.toLowerCase()) ||
+    (order.feedback?.productSuggestion || "")
+      .toLowerCase()
+      .includes(search.toLowerCase()) ||
+    (order.feedback?.reason || "")
+      .toLowerCase()
+      .includes(search.toLowerCase()) ||
+      (order.customer?.email || "").toLowerCase().includes(search.toLocaleLowerCase())
   );
 
   return (
@@ -56,19 +82,19 @@ export default function ServiceFeedback() {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item, idx) => (
+            {filteredData.map((order, idx) => (
               <tr key={idx} className="border-b hover:bg-gray-50">
-                <td className="px-4 py-2">{item.name}</td>
-                <td className="px-4 py-2">{item.email}/{item.phone}</td>
-                <td className="px-4 py-2">{item.suggestion}</td>
-                <td className="px-4 py-2">{item.reason}</td>
-                <td className="px-4 py-2">{item.serviceRating}</td>
-                <td className="px-4 py-2">{item.qualityRating}</td>
-                <td className="px-4 py-2">{item.deliveryRating}</td>
-                <td className="px-4 py-2">{item.comment}</td>
-                <td className="px-4 py-2">{item.orderId}</td>
-                <td className="px-4 py-2">{item.status}</td>
-                <td className="px-4 py-2">{item.date}</td>
+                <td className="px-4 py-2">{order.customer?.name}</td>
+                <td className="px-4 py-2">{order.customer?.email || "-"}/{order.customer.phone}</td>
+                <td className="px-4 py-2">{order.feedback?.productSuggestion  }</td>
+                <td className="px-4 py-2">{order.reason}</td>
+                <td className="px-4 py-2">{order.serviceRating}</td>
+                <td className="px-4 py-2">{order.qualityRating}</td>
+                <td className="px-4 py-2">{order.deliveryRating}</td>
+                <td className="px-4 py-2">{order.comment}</td>
+                <td className="px-4 py-2">{order.orderId}</td>
+                <td className="px-4 py-2">{order.status}</td>
+                <td className="px-4 py-2">{order.date}</td>
               </tr>
             ))}
           </tbody>
