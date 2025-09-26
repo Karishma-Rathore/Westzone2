@@ -256,7 +256,7 @@ export default function Promotion() {
                 <td className="px-4 py-2">{promo.discountValue}</td>
                 <td className="px-4 py-2">
                   <Link
-                    href={`/promotion/promotionss/${promo._id}`}
+                    href={`promotionss/${promo._id}`}
                     className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 flex items-center gap-1"
                   >
                     <PencilIcon className="h-5 w-5" /> Edit

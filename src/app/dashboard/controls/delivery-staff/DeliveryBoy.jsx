@@ -12,7 +12,7 @@ export default function DeliveryBoy() {
   const [showForm, setShowForm] = useState(false);
   const [editData, setEditData] = useState(null);
 
-  // ✅ Load Delivery Staff Data
+  //  Load Delivery Staff Data
   useEffect(() => {
     fetchStaff();
   }, []);
@@ -27,7 +27,7 @@ export default function DeliveryBoy() {
     }
   };
 
-  // ✅ Delete Staff
+  // Delete Staff
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${LOCAL_URL}api/delivery-staff/${id}`);
@@ -39,16 +39,16 @@ export default function DeliveryBoy() {
     }
   };
 
-  // ✅ Search Filter
+  // Search Filter
   const filteredList = staffList.filter(staff =>
     staff.name?.toLowerCase().includes(searchName.toLowerCase())
   );
 
-  // ✅ Save (Add / Update)
+  //  Save (Add / Update)
   const handleSave = async (formData) => {
     try {
       if (editData) {
-        await axios.put(`h${LOCAL_URL}api/delivery-staff/${editData._id}`, formData);
+        await axios.put(`${LOCAL_URL}api/delivery-staff/${editData._id}`, formData);
         toast.success("Staff updated!");
       } else {
         await axios.post(`${LOCAL_URL}api/delivery-staff`, formData);
@@ -169,7 +169,7 @@ export default function DeliveryBoy() {
   );
 }
 
-// ✅ Staff Form Component (Full-Screen Modal)
+//  Staff Form Component (Full-Screen Modal)
 function StaffForm({ initialData = null, onCancel, onSave }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -309,3 +309,6 @@ function StaffForm({ initialData = null, onCancel, onSave }) {
     </div>
   );
 }
+
+
+
